@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-export default function Movie({ movieId }) {
+export default function Movie({ movieId, isRented }) {
   return (
-    <Link to={`/movies/${movieId}`}>
-      <div className="movie">
-        <img src="/logo192.png" alt={`"${movieId}" Movie poster`} />
-        <button title="Rent movie">+</button>
-      </div>
-    </Link>
+    <div className="movie">
+      <Link to={`/movies/${movieId}`}>
+        <img src="/favicon.ico" alt={`"${movieId}" Movie poster`} />
+      </Link>
+      <button title="Rent movie">{isRented?"-":"+"}</button>
+    </div>
   );
 }

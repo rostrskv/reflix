@@ -1,4 +1,5 @@
 import Movie from "./Movie";
+import { formatCurrency } from "../utils";
 /**
  * Landing page component.
  * Displaying movies (catalog & rented), search bar, and budget
@@ -11,26 +12,22 @@ export default function Catalog() {
   const catalogMoviesIds = [2, 3, 4];
   const budget = 10;
 
-  const budgetFormat = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
   return (
     <div className="catalog">
       <input placeholder="Search"></input>
-      <div>Budget: {budgetFormat.format(budget)}</div>
+      <div>Budget: {formatCurrency(budget)}</div>
 
       <h2>Rented:</h2>
       <div>
         {rentedMoviesIds.map((id) => (
-          <Movie key={id} movieId={id} />
+          <Movie key={id} movieId={id} isRented={true} />
         ))}
       </div>
 
       <h2>Catalog:</h2>
       <div>
         {catalogMoviesIds.map((id) => (
-          <Movie  key={id} movieId={id} />
+          <Movie key={id} movieId={id} />
         ))}
       </div>
     </div>
