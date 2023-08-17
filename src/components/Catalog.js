@@ -23,14 +23,14 @@ export default function Catalog() {
       <h2>Rented:</h2>
       <div>
         {rentedMoviesIds.map((id) => (
-          <Movie movieId={id} />
+          <Movie key={id} movieId={id} />
         ))}
       </div>
 
       <h2>Catalog:</h2>
       <div>
         {catalogMoviesIds.map((id) => (
-          <Movie movieId={id} />
+          <Movie  key={id} movieId={id} />
         ))}
       </div>
     </div>
