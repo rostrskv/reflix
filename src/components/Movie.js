@@ -1,4 +1,9 @@
 import { Link } from "react-router-dom";
+/**
+ * Renders list of movies
+ * @param {*} param0 
+ * @returns 
+ */
 export default function Movie({
   userId,
   id,

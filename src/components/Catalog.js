@@ -1,9 +1,9 @@
-import Movie from "./Movie";
 import { formatCurrency } from "../utils";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getTrending } from "../services/movies";
 import { CONSTANTS } from "../constants";
+import { MovieList } from "./MovieList";
 
 /**
  * Landing page component.
@@ -46,34 +46,21 @@ export default function Catalog() {
     <div className="catalog">
       <input placeholder="Search"></input>
       <div>Budget: {formatCurrency(budget)}</div>
-
-      <h2>Rented:</h2>
-      <div className="movie-list">
-        {rented.map((movie) => (
-          <Movie
-            key={movie.id}
-            userId={userId}
-            isRented={isRented(movie)}
-            rentHandler={() => rentHandler(movie.id)}
-            unRentHandler={() => unRentHandler(movie.id)}
-            {...movie}
-          />
-        ))}
-      </div>
-
+      {rented.length > 0 && <h2>Rented:</h2>}
+      <MovieList
+        movies={rented}
+        isRented={isRented}
+        rentHandler={rentHandler}
+        unRentHandler={unRentHandler}
+      />
       <h2>Catalog:</h2>
-      <div className="movie-list">
-        {trending.map((movie) => (
-          <Movie
-            key={movie.id}
-            userId={userId}
-            isRented={isRented(movie)}
-            rentHandler={() => rentHandler(movie.id)}
-            unRentHandler={() => unRentHandler(movie.id)}
-            {...movie}
-          />
-        ))}
-      </div>
+      <MovieList
+        movies={trending}
+        isRented={isRented}
+        rentHandler={rentHandler}
+        unRentHandler={unRentHandler}
+      />
     </div>
   );
 }
+
