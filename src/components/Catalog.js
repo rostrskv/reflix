@@ -11,7 +11,6 @@ import { MovieList } from "./MovieList";
  * @returns
  */
 export default function Catalog() {
-  // TODO: display all the rented Movies. (up to 10 movies)
   const { userId } = useLocation().state ?? 0;
 
   const [trending, setTrending] = useState([]);
@@ -24,8 +23,9 @@ export default function Catalog() {
   function rentHandler(movieId) {
     const movie = trending.find((m) => m.id === movieId);
     const newBudget = budget - CONSTANTS.rentingPrice;
+    // TODO: show "non enough $$$ to rent"/"too many moves rented"
     if (
-      !isRented(movie) &&
+      !isRented(movie) &&    
       newBudget >= 0 &&
       rented.length < CONSTANTS.movieListLimit
     ) {
@@ -33,7 +33,6 @@ export default function Catalog() {
       setBudget(newBudget);
     }
   }
-
   function unRentHandler(movieId) {
     setRented(rented.filter((r) => r.id !== movieId));
     setBudget(budget + CONSTANTS.rentingPrice);
@@ -41,6 +40,8 @@ export default function Catalog() {
   function searchHandler(event) {
     setSearchQuery(event.target.value);
   }
+
+  // TODO: restrict times the api is called while searching
 
   useEffect(() => {
     if (searchQuery.trim().length === 0) {
