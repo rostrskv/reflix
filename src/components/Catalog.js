@@ -3,6 +3,7 @@ import { formatCurrency } from "../utils";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getTrending } from "../services/movies";
+import { CONSTANTS } from "../constants";
 
 /**
  * Landing page component.
@@ -13,28 +14,28 @@ export default function Catalog() {
   // TODO: display all the rented Movies. (up to 10 movies)
   const { userId } = useLocation().state ?? 0;
 
-  const [trendingState, setTrendingState] = useState([]);
+  const [trending, setTrending] = useState([]);
+  const [rented, setRented] = useState([]);
+  const [budget, setBudget] = useState(CONSTANTS.startBudget);
 
-  const [rentedState, setRentedState] = useState([]);
-
-  const isRented = (movie) => rentedState.some((r) => r.id === movie.id);
+  const isRented = (movie) => rented.some((r) => r.id === movie.id);
 
   function rentHandler(movieId) {
-    const movie = trendingState.find((m) => m.id === movieId);
+    const movie = trending.find((m) => m.id === movieId);
     if (!isRented(movie)) {
-      setRentedState([...rentedState, movie]);
+      setRented([...rented, movie]);
+      setBudget(budget - CONSTANTS.rentingPrice)
     }
   }
 
   function unRentHandler(movieId) {
-    setRentedState(rentedState.filter((r) => r.id !== movieId));
+    setRented(rented.filter((r) => r.id !== movieId));
+    setBudget(budget + CONSTANTS.rentingPrice)
   }
 
   useEffect(() => {
-    getTrending().then(setTrendingState);
+    getTrending().then(setTrending);
   }, []);
-
-  const budget = 10;
 
   return (
     <div className="catalog">
@@ -43,7 +44,7 @@ export default function Catalog() {
 
       <h2>Rented:</h2>
       <div>
-      {rentedState.map((movie) => (
+        {rented.map((movie) => (
           <Movie
             key={movie.id}
             userId={userId}
@@ -57,7 +58,7 @@ export default function Catalog() {
 
       <h2>Catalog:</h2>
       <div>
-        {trendingState.map((movie) => (
+        {trending.map((movie) => (
           <Movie
             key={movie.id}
             userId={userId}
