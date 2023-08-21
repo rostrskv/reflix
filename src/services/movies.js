@@ -114,7 +114,7 @@ export async function getTrending() {
 // }
 export async function getMovieDetail(movieId) {
   const imageBaseUrl = await getImageBaseUrl();
-  const url = getTmdbUrl(`https://api.themoviedb.org/3/movie/${movieId}`);
+  const url = getTmdbUrl(`/3/movie/${movieId}`);
   const response = await fetch(url);
   const movie = await response.json();
   return {
@@ -123,4 +123,20 @@ export async function getMovieDetail(movieId) {
     overview: movie.overview,
     poster_path: `${imageBaseUrl}w500${movie.poster_path}`,
   };
+}
+
+export async function searchMovie(query) {
+  const imageBaseUrl = await getImageBaseUrl();
+  const url = getTmdbUrl(`/3/search/movie?query=${query}`);
+  const response = await fetch(url);
+  const searchResult = await response.json();
+
+  return searchResult.results
+    .slice(0, CONSTANTS.movieListLimit)
+    .map(({ id, title, overview, poster_path }) => ({
+      id,
+      title,
+      overview,
+      poster_path: `${imageBaseUrl}w185${poster_path}`,
+    }));
 }
