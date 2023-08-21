@@ -11,22 +11,29 @@ import { getTrending } from "../services/movies";
  */
 export default function Catalog() {
   // TODO: display all the rented Movies. (up to 10 movies)
-  const { userId } = useLocation().state;
+  const { userId } = useLocation().state ?? 0;
 
-  const [trendingState, setTrendingState] = useState([
-    {
-      id: NaN,
-      title: "",
-      overview: "",
-      poster_path: "",
-    },
-  ]);
+  const [trendingState, setTrendingState] = useState([]);
+
+  const [rentedState, setRentedState] = useState([]);
+
+  const isRented = (movie) => rentedState.some((r) => r.id === movie.id);
+
+  function rentHandler(movieId) {
+    const movie = trendingState.find((m) => m.id === movieId);
+    if (!isRented(movie)) {
+      setRentedState([...rentedState, movie]);
+    }
+  }
+
+  function unRentHandler(movieId) {
+    setRentedState(rentedState.filter((r) => r.id !== movieId));
+  }
 
   useEffect(() => {
     getTrending().then(setTrendingState);
   }, []);
 
-  const rentedMoviesIds = [2];
   const budget = 10;
 
   return (
@@ -36,15 +43,29 @@ export default function Catalog() {
 
       <h2>Rented:</h2>
       <div>
-        {rentedMoviesIds.map((id) => (
-          <Movie key={id} movieId={id} isRented={true} />
+      {rentedState.map((movie) => (
+          <Movie
+            key={movie.id}
+            userId={userId}
+            isRented={isRented(movie)}
+            rentHandler={() => rentHandler(movie.id)}
+            unRentHandler={() => unRentHandler(movie.id)}
+            {...movie}
+          />
         ))}
       </div>
 
       <h2>Catalog:</h2>
       <div>
         {trendingState.map((movie) => (
-          <Movie key={movie.id} isRented={false} {...movie} />
+          <Movie
+            key={movie.id}
+            userId={userId}
+            isRented={isRented(movie)}
+            rentHandler={() => rentHandler(movie.id)}
+            unRentHandler={() => unRentHandler(movie.id)}
+            {...movie}
+          />
         ))}
       </div>
     </div>
