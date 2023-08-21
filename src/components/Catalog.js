@@ -48,7 +48,7 @@ export default function Catalog() {
       <div>Budget: {formatCurrency(budget)}</div>
 
       <h2>Rented:</h2>
-      <div>
+      <div className="movie-list">
         {rented.map((movie) => (
           <Movie
             key={movie.id}
@@ -62,7 +62,7 @@ export default function Catalog() {
       </div>
 
       <h2>Catalog:</h2>
-      <div>
+      <div className="movie-list">
         {trending.map((movie) => (
           <Movie
             key={movie.id}
