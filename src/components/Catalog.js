@@ -22,15 +22,20 @@ export default function Catalog() {
 
   function rentHandler(movieId) {
     const movie = trending.find((m) => m.id === movieId);
-    if (!isRented(movie)) {
+    const newBudget = budget - CONSTANTS.rentingPrice;
+    if (
+      !isRented(movie) &&
+      newBudget >= 0 &&
+      rented.length < CONSTANTS.movieListLimit
+    ) {
       setRented([...rented, movie]);
-      setBudget(budget - CONSTANTS.rentingPrice)
+      setBudget(newBudget);
     }
   }
 
   function unRentHandler(movieId) {
     setRented(rented.filter((r) => r.id !== movieId));
-    setBudget(budget + CONSTANTS.rentingPrice)
+    setBudget(budget + CONSTANTS.rentingPrice);
   }
 
   useEffect(() => {

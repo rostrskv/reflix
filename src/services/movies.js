@@ -59,14 +59,14 @@ export async function getTrending() {
   //   },
   // };
 
-  const mappedTrending = trending.results.map(
-    ({ id, title, overview, poster_path }) => ({
+  const mappedTrending = trending.results
+    .slice(0, CONSTANTS.movieListLimit)
+    .map(({ id, title, overview, poster_path }) => ({
       id,
       title,
       overview,
       poster_path: `${imageBaseUrl}w185${poster_path}`,
-    })
-  );
+    }));
 
   return mappedTrending;
 }

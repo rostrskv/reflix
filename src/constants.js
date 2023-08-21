@@ -7,5 +7,6 @@ export const CONSTANTS = {
     { id: 4, name: "Tina", color: "#f0c31d" },
   ],
   startBudget: 10,
-  rentingPrice: 3,
+  rentingPrice: 1.5,
+  movieListLimit: 10,
 };
