@@ -16,8 +16,6 @@ export default function Catalog({
   userId,
   setUserId,
 }) {
-  setUserId(useLocation().state?.userId ?? 0);
-
   const [trending, setTrending] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState("");
@@ -44,7 +42,7 @@ export default function Catalog({
       setMessage("Not enough money to rent the movie");
       return;
     }
-    if (usersRented[0].rented.length < CONSTANTS.movieListLimit) {
+    if (usersRented[0].rented.length >= CONSTANTS.movieListLimit) {
       setMessage(`Cannot rent more than ${CONSTANTS.movieListLimit} movies`);
       return;
     }
