@@ -19,37 +19,35 @@ export default function Catalog({
   setUserId(useLocation().state?.userId ?? 0);
 
   const [trending, setTrending] = useState([]);
-  const [budget, setBudget] = useState(CONSTANTS.startBudget);
+  //const [budget, setBudget] = useState(CONSTANTS.startBudget);
   const [searchQuery, setSearchQuery] = useState("");
 
   function getRented() {
-    return usersRented[userId].rented;
+    return usersRented[userId];
   }
   
-  function setRented(rented) {
+  function setRented(rented, budget) {
     setUsersRented({...usersRented, [userId]:{
-      ...{...usersRented[userId], rented:rented}
+      ...{...usersRented[userId], rented, budget}
     }});
   }
   
-  const isRented = (movie) => getRented().some((r) => r.id === movie.id);
+  const isRented = (movie) => getRented().rented.some((r) => r.id === movie.id);
 
   function rentHandler(movieId) {
     const movie = trending.find((m) => m.id === movieId);
-    const newBudget = budget - CONSTANTS.rentingPrice;
+    const newBudget = getRented().budget - CONSTANTS.rentingPrice;
     // TODO: show "non enough $$$ to rent"/"too many moves rented"
     if (
       !isRented(movie) &&
       newBudget >= 0 &&
       usersRented[0].rented.length < CONSTANTS.movieListLimit
     ) {
-      setRented([...getRented(), movie]);
-      setBudget(newBudget);
+      setRented([...getRented().rented, movie], newBudget);      
     }
   }
   function unRentHandler(movieId) {
-    setRented(getRented().filter((r) => r.id !== movieId));
-    setBudget(budget + CONSTANTS.rentingPrice);
+    setRented(getRented().rented.filter((r) => r.id !== movieId), getRented().budget + CONSTANTS.rentingPrice);
   }
   function searchHandler(event) {
     setSearchQuery(event.target.value);
@@ -72,11 +70,11 @@ export default function Catalog({
         value={searchQuery}
         onChange={searchHandler}
       ></input>
-      <div>Budget: {formatCurrency(budget)}</div>
-      {getRented().length > 0 && <h2>Rented:</h2>}
+      <div>Budget: {formatCurrency(getRented().budget)}</div>
+      {getRented().rented.length > 0 && <h2>Rented:</h2>}
       <MovieList
         userId={userId}
-        movies={getRented()}
+        movies={getRented().rented}
         isRented={isRented}
         rentHandler={rentHandler}
         unRentHandler={unRentHandler}
