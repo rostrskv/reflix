@@ -45,19 +45,6 @@ export async function getTrending() {
   const trendingUrl = getTmdbUrl("/3/trending/movie/day");
   const trending = await (await fetch(trendingUrl)).json();
   const imageBaseUrl = await getImageBaseUrl();
-  // const trending = {
-  //   trending: {
-  //     results: [
-  //       {
-  //         backdrop_path: "/2D6ksPSChcRcZuvavrae9g4b8oh.jpg",
-  //         id:    832502,
-  //         title: "The Monkey King",
-  //         overview: "A stick-wielding monkey teams with a young girl on an epic quest",
-  //         poster_path: "/i6ye8ueFhVE5pXatgyRrZ83LBD8.jpg",
-  //       },
-  //     ],
-  //   },
-  // };
 
   const mappedTrending = trending.results
     .slice(0, CONSTANTS.movieListLimit)
@@ -65,53 +52,12 @@ export async function getTrending() {
       id,
       title,
       overview,
-      poster_path: `${imageBaseUrl}w185${poster_path}`,
+      poster_path: poster_path && `${imageBaseUrl}w185${poster_path}`,
     }));
 
   return mappedTrending;
 }
 
-// {
-//   "adult": false,
-//   "backdrop_path": "/2D6ksPSChcRcZuvavrae9g4b8oh.jpg",
-//   "belongs_to_collection": null,
-//   "budget": 0,
-//   "genres": [
-//   ],
-//   "homepage": "https://www.netflix.com/title/80237245",
-//   "id": 832502,
-//   "imdb_id": "tt8637498",
-//   "original_language": "en",
-//   "original_title": "The Monkey King",
-//   "overview": "A stick-wielding monkey teams with a young girl on an epic quest for immortality, battling demons, dragons, gods — and his own ego — along the way.",
-//   "popularity": 72.796,
-//   "poster_path": "/i6ye8ueFhVE5pXatgyRrZ83LBD8.jpg",
-//   "production_companies": [
-//       {
-//           "id": 76266,
-//           "logo_path": "/hcFz4LHfTkUkkDCtK7ozT2Hh4Ob.png",
-//           "name": "Pearl Studio",
-//           "origin_country": "CN"
-//       }
-//   ],
-//   "production_countries": [
-//       {
-//           "iso_3166_1": "CN",
-//           "name": "China"
-//       }
-//   ],
-//   "release_date": "2023-08-11",
-//   "revenue": 0,
-//   "runtime": 92,
-//   "spoken_languages": [
-//   ],
-//   "status": "Released",
-//   "tagline": "The legend has arrived.",
-//   "title": "The Monkey King",
-//   "video": false,
-//   "vote_average": 7.2,
-//   "vote_count": 31
-// }
 export async function getMovieDetail(movieId) {
   const imageBaseUrl = await getImageBaseUrl();
   const url = getTmdbUrl(`/3/movie/${movieId}`);
@@ -137,6 +83,6 @@ export async function searchMovie(query) {
       id,
       title,
       overview,
-      poster_path: `${imageBaseUrl}w185${poster_path}`,
+      poster_path: poster_path &&  `${imageBaseUrl}w185${poster_path}`,
     }));
 }

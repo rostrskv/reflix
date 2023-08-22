@@ -17,17 +17,26 @@ export default function Movie({
   return (
     <div className="movie">
       <Link to={`/movies/${id}`} state={{ userId }}>
-        {/* 
-//TODO: handling null poster_path, set same image height
-         */}
-        <img src={poster_path} alt={title} title={title} />
+        {poster_path ? (
+          <img src={poster_path} alt={title} title={title} className="poster" />
+        ) : (
+          <span>{title}</span>
+        )}
       </Link>
       {isRented ? (
-        <button title="Return rented movie" onClick={unRentHandler}>
-          -
+        <button
+          title="Return rented movie"
+          onClick={unRentHandler}
+          className="rent-button"
+        >
+          –
         </button>
       ) : (
-        <button title="Rent movie" onClick={rentHandler}>
+        <button
+          title="Rent movie"
+          onClick={rentHandler}
+          className="rent-button"
+        >
           +
         </button>
       )}

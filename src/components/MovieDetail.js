@@ -6,7 +6,6 @@ export default function MovieDetail() {
   const [movie, setMovie] = useState();
   useEffect(() => {
     getMovieDetail(movieId).then(setMovie);
-    console.log(movie);
   }, 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   []);

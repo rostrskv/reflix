@@ -1,5 +1,4 @@
 import { formatCurrency } from "../utils";
-import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getTrending, searchMovie } from "../services/movies";
 import { CONSTANTS } from "../constants";
@@ -34,6 +33,10 @@ export default function Catalog({
   }
 
   const isRented = (movie) => getRented().rented.some((r) => r.id === movie.id);
+
+  useEffect(() => {
+    setMessage("");
+  }, [searchQuery, usersRented]);
 
   function rentHandler(movieId) {
     const movie = trending.find((m) => m.id === movieId);
@@ -76,12 +79,14 @@ export default function Catalog({
 
   return (
     <div className="catalog">
-      <input
-        placeholder="Search"
-        value={searchQuery}
-        onChange={searchHandler}
-      ></input>
-      <div>Budget: {formatCurrency(getRented().budget)}</div>
+      <div className="top-bar">
+        <input
+          placeholder="Search"
+          value={searchQuery}
+          onChange={searchHandler}
+        />
+        <div>Budget: {formatCurrency(getRented().budget)}</div>
+      </div>
       {message.length > 0 && (
         <div className="message" onClick={() => setMessage("")}>
           {message}

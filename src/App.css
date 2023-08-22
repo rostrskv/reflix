@@ -1,9 +1,64 @@
+body {
+  background-color: #121212;
+  color: white;
+}
+
+a {
+  color: white;
+}
+
 .App {
   text-align: center;
 }
-
+.logo {
+  color: aqua;
+  font-weight: bold;
+}
+.usersState button{
+  padding: 4rem;
+  margin: 1rem;
+  border-radius: 1rem;
+  border: none;  
+}
 .movie-list {
+  padding: 0 2rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
   gap: 2rem;
+}
+
+.movie {
+  width: 185px;
+  height: 278px;
+  position: relative;
+}
+
+.movie a {
+  color: white;
+  text-decoration: none;
+}
+img.poster {
+  height: 100%;
+}
+
+.rent-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border-radius: 50%;
+  border: 2px solid white;
+  width: 2rem;
+  height: 2rem;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 1.5rem;
+  text-align: center;
+  vertical-align: center;
+}
+
+.nav-bar,
+.top-bar {
+  display: flex;
+  padding: 0.5rem;
+  justify-content: space-between;
 }
