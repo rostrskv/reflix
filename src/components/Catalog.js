@@ -19,35 +19,48 @@ export default function Catalog({
   setUserId(useLocation().state?.userId ?? 0);
 
   const [trending, setTrending] = useState([]);
-  //const [budget, setBudget] = useState(CONSTANTS.startBudget);
   const [searchQuery, setSearchQuery] = useState("");
+  const [message, setMessage] = useState("");
 
   function getRented() {
     return usersRented[userId];
   }
-  
+
   function setRented(rented, budget) {
-    setUsersRented({...usersRented, [userId]:{
-      ...{...usersRented[userId], rented, budget}
-    }});
+    setUsersRented({
+      ...usersRented,
+      [userId]: {
+        ...{ ...usersRented[userId], rented, budget },
+      },
+    });
   }
-  
+
   const isRented = (movie) => getRented().rented.some((r) => r.id === movie.id);
 
   function rentHandler(movieId) {
     const movie = trending.find((m) => m.id === movieId);
     const newBudget = getRented().budget - CONSTANTS.rentingPrice;
-    // TODO: show "non enough $$$ to rent"/"too many moves rented"
+    if (newBudget < 0) {
+      setMessage("Not enough money to rent the movie");
+      return;
+    }
+    if (usersRented[0].rented.length < CONSTANTS.movieListLimit) {
+      setMessage(`Cannot rent more than ${CONSTANTS.movieListLimit} movies`);
+      return;
+    }
     if (
       !isRented(movie) &&
       newBudget >= 0 &&
       usersRented[0].rented.length < CONSTANTS.movieListLimit
     ) {
-      setRented([...getRented().rented, movie], newBudget);      
+      setRented([...getRented().rented, movie], newBudget);
     }
   }
   function unRentHandler(movieId) {
-    setRented(getRented().rented.filter((r) => r.id !== movieId), getRented().budget + CONSTANTS.rentingPrice);
+    setRented(
+      getRented().rented.filter((r) => r.id !== movieId),
+      getRented().budget + CONSTANTS.rentingPrice
+    );
   }
   function searchHandler(event) {
     setSearchQuery(event.target.value);
@@ -71,6 +84,11 @@ export default function Catalog({
         onChange={searchHandler}
       ></input>
       <div>Budget: {formatCurrency(getRented().budget)}</div>
+      {message.length > 0 && (
+        <div className="message" onClick={() => setMessage("")}>
+          {message}
+        </div>
+      )}
       {getRented().rented.length > 0 && <h2>Rented:</h2>}
       <MovieList
         userId={userId}
