@@ -10,31 +10,45 @@ import { MovieList } from "./MovieList";
  * Displaying movies (catalog & rented), search bar, and budget
  * @returns
  */
-export default function Catalog() {
-  const { userId } = useLocation().state ?? 0;
+export default function Catalog({
+  usersRented,
+  setUsersRented,
+  userId,
+  setUserId,
+}) {
+  setUserId(useLocation().state?.userId ?? 0);
 
   const [trending, setTrending] = useState([]);
-  const [rented, setRented] = useState([]);
   const [budget, setBudget] = useState(CONSTANTS.startBudget);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const isRented = (movie) => rented.some((r) => r.id === movie.id);
+  function getRented() {
+    return usersRented[userId].rented;
+  }
+  
+  function setRented(rented) {
+    setUsersRented({...usersRented, [userId]:{
+      ...{...usersRented[userId], rented:rented}
+    }});
+  }
+  
+  const isRented = (movie) => getRented().some((r) => r.id === movie.id);
 
   function rentHandler(movieId) {
     const movie = trending.find((m) => m.id === movieId);
     const newBudget = budget - CONSTANTS.rentingPrice;
     // TODO: show "non enough $$$ to rent"/"too many moves rented"
     if (
-      !isRented(movie) &&    
+      !isRented(movie) &&
       newBudget >= 0 &&
-      rented.length < CONSTANTS.movieListLimit
+      usersRented[0].rented.length < CONSTANTS.movieListLimit
     ) {
-      setRented([...rented, movie]);
+      setRented([...getRented(), movie]);
       setBudget(newBudget);
     }
   }
   function unRentHandler(movieId) {
-    setRented(rented.filter((r) => r.id !== movieId));
+    setRented(getRented().filter((r) => r.id !== movieId));
     setBudget(budget + CONSTANTS.rentingPrice);
   }
   function searchHandler(event) {
@@ -59,10 +73,10 @@ export default function Catalog() {
         onChange={searchHandler}
       ></input>
       <div>Budget: {formatCurrency(budget)}</div>
-      {rented.length > 0 && <h2>Rented:</h2>}
+      {getRented().length > 0 && <h2>Rented:</h2>}
       <MovieList
         userId={userId}
-        movies={rented}
+        movies={getRented()}
         isRented={isRented}
         rentHandler={rentHandler}
         unRentHandler={unRentHandler}

@@ -13,8 +13,8 @@ export default function MovieDetail() {
 
   return (
     <div className="movie-detail">
-      <img src={movie?.poster_path} alt={`${movie?.title} poster`} />
       <h2>{movie?.title}</h2>
+      <img src={movie?.poster_path} alt={`${movie?.title} poster`} />
       <div>{movie?.overview}</div>
     </div>
   );
