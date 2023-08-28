@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import './Movie.css'
 /**
  * Renders list of movies
  * @param {*} param0
@@ -24,21 +26,15 @@ export default function Movie({
         )}
       </Link>
       {isRented ? (
-        <button
+        <button className="rent-button bi bi-dash-circle-fill"
           title="Return rented movie"
           onClick={unRentHandler}
-          className="rent-button"
-        >
-          –
-        </button>
+        />
       ) : (
-        <button
+        <button class="rent-button bi bi-plus-circle-fill"
           title="Rent movie"
           onClick={rentHandler}
-          className="rent-button"
-        >
-          +
-        </button>
+        />
       )}
     </div>
   );

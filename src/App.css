@@ -27,35 +27,6 @@ a {
   gap: 2rem;
 }
 
-.movie {
-  width: 185px;
-  height: 278px;
-  position: relative;
-}
-
-.movie a {
-  color: white;
-  text-decoration: none;
-}
-img.poster {
-  height: 100%;
-}
-
-.rent-button {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  border-radius: 50%;
-  border: 2px solid white;
-  width: 2rem;
-  height: 2rem;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  font-size: 1.5rem;
-  text-align: center;
-  vertical-align: center;
-}
-
 .nav-bar,
 .top-bar {
   display: flex;
