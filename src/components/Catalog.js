@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getTrending, searchMovie } from "../services/movies";
 import { CONSTANTS } from "../constants";
 import { MovieList } from "./MovieList";
+import Modal from "./Modal";
 
 /**
  * Landing page component.
@@ -13,6 +14,7 @@ export default function Catalog({ usersRented, setUsersRented, userId }) {
   const [trending, setTrending] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState("");
+  const [modalTitle, setModalTitle] = useState(null);
 
   function getRented() {
     return usersRented[userId];
@@ -50,6 +52,7 @@ export default function Catalog({ usersRented, setUsersRented, userId }) {
       usersRented[0].rented.length < CONSTANTS.movieListLimit
     ) {
       setRented([...getRented().rented, movie], newBudget);
+      setModalTitle(movie.title);
     }
   }
   function unRentHandler(movieId) {
@@ -60,6 +63,10 @@ export default function Catalog({ usersRented, setUsersRented, userId }) {
   }
   function searchHandler(event) {
     setSearchQuery(event.target.value);
+  }
+  function closeModalHandler()
+  {
+    setModalTitle(null);
   }
 
   useEffect(() => {
@@ -72,6 +79,7 @@ export default function Catalog({ usersRented, setUsersRented, userId }) {
 
   return (
     <div className="catalog">
+      {modalTitle && <Modal title={modalTitle} closeModal={closeModalHandler} />}
       <div className="top-bar">
         <input
           placeholder="Search"
