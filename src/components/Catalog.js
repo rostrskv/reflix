@@ -13,8 +13,11 @@ import Modal from "./Modal";
 export default function Catalog({ usersRented, setUsersRented, userId }) {
   const [trending, setTrending] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [message, setMessage] = useState("");
-  const [modalTitle, setModalTitle] = useState(null);
+  const [modal, setModal] = useState({
+    visible: false,
+    message: "",
+    gifQuery: "",
+  });
 
   function getRented() {
     return usersRented[userId];
@@ -31,19 +34,21 @@ export default function Catalog({ usersRented, setUsersRented, userId }) {
 
   const isRented = (movie) => getRented().rented.some((r) => r.id === movie.id);
 
-  useEffect(() => {
-    setMessage("");
-  }, [searchQuery, usersRented]);
-
   function rentHandler(movieId) {
     const movie = trending.find((m) => m.id === movieId);
     const newBudget = getRented().budget - CONSTANTS.rentingPrice;
     if (newBudget < 0) {
-      setMessage("Not enough money to rent the movie");
+      setModal({
+        visible: true,
+        message: "Not enough money to rent the movie",
+      });
       return;
     }
     if (usersRented[0].rented.length >= CONSTANTS.movieListLimit) {
-      setMessage(`Cannot rent more than ${CONSTANTS.movieListLimit} movies`);
+      setModal({
+        visible: true,
+        message: `Cannot rent more than ${CONSTANTS.movieListLimit} movies`,
+      });
       return;
     }
     if (
@@ -52,7 +57,11 @@ export default function Catalog({ usersRented, setUsersRented, userId }) {
       usersRented[0].rented.length < CONSTANTS.movieListLimit
     ) {
       setRented([...getRented().rented, movie], newBudget);
-      setModalTitle(movie.title);
+      setModal({
+        visible: true,
+        message: `Rented "${movie.title}" Sucessfully!`,
+        gifQuery: `movie ${movie.title}`,
+      });
     }
   }
   function unRentHandler(movieId) {
@@ -64,9 +73,8 @@ export default function Catalog({ usersRented, setUsersRented, userId }) {
   function searchHandler(event) {
     setSearchQuery(event.target.value);
   }
-  function closeModalHandler()
-  {
-    setModalTitle(null);
+  function closeModalHandler() {
+    setModal({ visible: false });
   }
 
   useEffect(() => {
@@ -79,7 +87,13 @@ export default function Catalog({ usersRented, setUsersRented, userId }) {
 
   return (
     <div className="catalog">
-      {modalTitle && <Modal title={modalTitle} closeModal={closeModalHandler} />}
+      {modal.visible && (
+        <Modal
+          message={modal.message}
+          gifQuery={modal.gifQuery}
+          closeModal={closeModalHandler}
+        />
+      )}
       <div className="top-bar">
         <input
           placeholder="Search"
@@ -88,11 +102,6 @@ export default function Catalog({ usersRented, setUsersRented, userId }) {
         />
         <div>Budget: {formatCurrency(getRented().budget)}</div>
       </div>
-      {message.length > 0 && (
-        <div className="message" onClick={() => setMessage("")}>
-          {message}
-        </div>
-      )}
       {getRented().rented.length > 0 && <h2>Rented:</h2>}
       <MovieList
         movies={getRented().rented}
