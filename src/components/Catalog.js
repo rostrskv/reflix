@@ -62,8 +62,6 @@ export default function Catalog({ usersRented, setUsersRented, userId }) {
     setSearchQuery(event.target.value);
   }
 
-  // TODO: restrict times the api is called while searching
-
   useEffect(() => {
     if (searchQuery.trim().length === 0) {
       getTrending().then(setTrending);
