@@ -59,7 +59,7 @@ export default function Catalog({ usersRented, setUsersRented, userId }) {
       setRented([...getRented().rented, movie], newBudget);
       setModal({
         visible: true,
-        message: `Rented "${movie.title}" Sucessfully!`,
+        message: `Rented "${movie.title}" Successfully!`,
         gifQuery: `movie ${movie.title}`,
       });
     }

@@ -30,7 +30,7 @@ export default function Movie({
           onClick={unRentHandler}
         />
       ) : (
-        <button class="rent-button bi bi-plus-circle-fill"
+        <button className="rent-button bi bi-plus-circle-fill"
           title="Rent movie"
           onClick={rentHandler}
         />

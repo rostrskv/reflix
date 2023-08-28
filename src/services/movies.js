@@ -1,7 +1,7 @@
 import { CONSTANTS } from "../constants";
 
 function getTmdbUrl(url) {
-  const baseUrl = "https://api.themoviedb.org/";
+  const baseUrl = CONSTANTS.tmdbBaseUrl;
   const fullUrl = new URL(url, baseUrl);
   fullUrl.searchParams.set("language", "en-US");
   fullUrl.searchParams.set("api_key", CONSTANTS.tmdbApiKey);
