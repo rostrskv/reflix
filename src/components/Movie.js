@@ -7,7 +7,6 @@ import './Movie.css'
  * @returns
  */
 export default function Movie({
-  userId,
   id,
   title,
   overview,
@@ -18,7 +17,7 @@ export default function Movie({
 }) {
   return (
     <div className="movie">
-      <Link to={`/movies/${id}`} state={{ userId }}>
+      <Link to={`/movies/${id}`} >
         {poster_path ? (
           <img src={poster_path} alt={title} title={title} className="poster" />
         ) : (

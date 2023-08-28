@@ -9,12 +9,7 @@ import { MovieList } from "./MovieList";
  * Displaying movies (catalog & rented), search bar, and budget
  * @returns
  */
-export default function Catalog({
-  usersRented,
-  setUsersRented,
-  userId,
-  setUserId,
-}) {
+export default function Catalog({ usersRented, setUsersRented, userId }) {
   const [trending, setTrending] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState("");
@@ -94,7 +89,6 @@ export default function Catalog({
       )}
       {getRented().rented.length > 0 && <h2>Rented:</h2>}
       <MovieList
-        userId={userId}
         movies={getRented().rented}
         isRented={isRented}
         rentHandler={rentHandler}
@@ -102,7 +96,6 @@ export default function Catalog({
       />
       <h2>Catalog:</h2>
       <MovieList
-        userId={userId}
         movies={trending}
         isRented={isRented}
         rentHandler={rentHandler}
